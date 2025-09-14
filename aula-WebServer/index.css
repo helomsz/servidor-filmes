@@ -1,0 +1,192 @@
+/* Fonte global */
+body.paginaLoginFilmes {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container */
+.containerLoginFilmes {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+    max-width: 350px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Cabeçalho */
+.cabecalhoLoginFilmes {
+    margin-bottom: 2rem;
+}
+
+.tituloLoginFilmes {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #FFD700;
+}
+
+.subtituloLoginFilmes {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: #ccc;
+}
+
+/* Formulário */
+.formularioLoginFilmes {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.labelLoginFilmes {
+    text-align: left;
+    font-size: 0.9rem;
+    color: #ddd;
+}
+
+.inputLoginFilmes {
+    padding: 0.7rem;
+    border-radius: 0.5rem;
+    border: none;
+    outline: none;
+    font-size: 0.95rem;
+    background: #1c1c1c;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.inputLoginFilmes:focus {
+    background: #2a2a2a;
+    border: 1px solid #FFD700;
+}
+
+/* Botão */
+.botaoEntrarFilmes {
+    background: #FFD700;
+    color: #000;
+    padding: 0.8rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.botaoEntrarFilmes:hover {
+    background: #e6c200;
+}
+
+/* Link */
+.linkEsqueciSenhaFilmes {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: #ccc;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.linkEsqueciSenhaFilmes:hover {
+    color: #FFD700;
+}
+
+/* Página de Cadastro */
+body.paginaCadastroFilmes {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+/* Container */
+.containerCadastroFilmes {
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+    max-width: 700px;
+    width: 100%;
+}
+
+/* Cabeçalho */
+.cabecalhoCadastroFilmes {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.tituloCadastroFilmes {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #FFD700;
+}
+
+.subtituloCadastroFilmes {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: #ccc;
+}
+
+/* Formulário */
+.formularioCadastroFilmes {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.labelCadastroFilmes {
+    text-align: left;
+    font-size: 0.9rem;
+    color: #ddd;
+}
+
+.inputCadastroFilmes, 
+.textareaCadastroFilmes, 
+select.inputCadastroFilmes {
+    padding: 0.7rem;
+    border-radius: 0.5rem;
+    border: none;
+    outline: none;
+    font-size: 0.95rem;
+    background: #1c1c1c;
+    color: #fff;
+    transition: all 0.3s ease;
+    resize: none;
+}
+
+.inputCadastroFilmes:focus, 
+.textareaCadastroFilmes:focus, 
+select.inputCadastroFilmes:focus {
+    background: #2a2a2a;
+    border: 1px solid #FFD700;
+}
+
+/* Botão */
+.botaoCadastrarFilmes {
+    margin-top: 1rem;
+    background: #FFD700;
+    color: #000;
+    padding: 0.9rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.botaoCadastrarFilmes:hover {
+    background: #e6c200;
+}

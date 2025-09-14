@@ -1,11 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Cadastro | CineWorld</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 </head>
-<body>
-    <h1>Cadastro</h1>
+<body class="paginaCadastroFilmes">
+    <main class="containerCadastroFilmes">
+        <header class="cabecalhoCadastroFilmes">
+            <h1 class="tituloCadastroFilmes">Cadastro de Filmes</h1>
+            <p class="subtituloCadastroFilmes">Preencha os dados abaixo</p>
+        </header>
+
+        <form class="formularioCadastroFilmes">
+            <label for="nome" class="labelCadastroFilmes">Nome do Filme</label>
+            <input type="text" id="nome" name="nome" class="inputCadastroFilmes" placeholder="Digite o nome do filme" required>
+
+            <label for="atores" class="labelCadastroFilmes">Atores</label>
+            <input type="text" id="atores" name="atores" class="inputCadastroFilmes" placeholder="Digite os atores separados por vírgula" required>
+
+            <label for="diretor" class="labelCadastroFilmes">Diretor</label>
+            <input type="text" id="diretor" name="diretor" class="inputCadastroFilmes" placeholder="Digite o diretor do filme" required>
+
+            <label for="ano" class="labelCadastroFilmes">Ano</label>
+            <input type="text" id="ano" name="ano" class="inputCadastroFilmes" placeholder="2025" pattern="\d{4}" maxlength="4" required>
+
+            <label for="genero" class="labelCadastroFilmes">Gênero</label>
+            <select id="genero" name="genero" class="inputCadastroFilmes" required>
+                <optgroup label="Principais">
+                    <option value="acao">Ação</option>
+                    <option value="aventura">Aventura</option>
+                    <option value="comedia">Comédia</option>
+                    <option value="drama">Drama</option>
+                    <option value="ficcao">Ficção Científica</option>
+                    <option value="fantasia">Fantasia</option>
+                    <option value="romance">Romance</option>
+                    <option value="terror">Terror</option>
+                    <option value="suspense">Suspense</option>
+                    <option value="animacao">Animação</option>
+                </optgroup>
+                <optgroup label="Outros">
+                    <option value="documentario">Documentário</option>
+                    <option value="musical">Musical</option>
+                    <option value="biografia">Biografia</option>
+                    <option value="guerra">Guerra</option>
+                    <option value="western">Faroeste</option>
+                </optgroup>
+            </select>
+
+            <label for="produtora" class="labelCadastroFilmes">Produtora</label>
+            <input type="text" id="produtora" name="produtora" class="inputCadastroFilmes" placeholder="Digite a produtora do filme" required>
+
+            <label for="sinopse" class="labelCadastroFilmes">Sinopse</label>
+            <textarea id="sinopse" name="sinopse" class="textareaCadastroFilmes" rows="6" placeholder="Digite aqui a sinopse ou descrição do filme..." required></textarea>
+
+            <button type="submit" class="botaoCadastrarFilmes">Cadastrar</button>
+        </form>
+    </main>
 </body>
 </html>

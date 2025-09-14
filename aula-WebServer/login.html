@@ -1,11 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login | CineWorld</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 </head>
-<body>
-    <h1>Login</h1>
+<body class="paginaLoginFilmes">
+    <main class="containerLoginFilmes">
+        <header class="cabecalhoLoginFilmes">
+            <h1 class="tituloLoginFilmes">CineWorld</h1>
+            <p class="subtituloLoginFilmes">Faça login para continuar</p>
+        </header>
+
+        <form class="formularioLoginFilmes">
+            <label for="usuario" class="labelLoginFilmes">Usuário</label>
+            <input type="text" id="usuario" name="usuario" class="inputLoginFilmes" required>
+
+            <label for="senha" class="labelLoginFilmes">Senha</label>
+            <input type="password" id="senha" name="senha" class="inputLoginFilmes" required>
+
+            <button type="submit" class="botaoEntrarFilmes">Entrar</button>
+            <a href="#" class="linkEsqueciSenhaFilmes">Esqueci minha senha</a>
+        </form>
+    </main>
 </body>
 </html>

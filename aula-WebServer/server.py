@@ -17,7 +17,7 @@ from http.server import SimpleHTTPRequestHandler, HTTPServer
 class MyHandle(SimpleHTTPRequestHandler):
     def list_directory(self, path):
         try:
-            f = open(os.path.join(path, 'index2.html'), 'r')
+            f = open(os.path.join(path, 'index.html'), 'r')
 
             self.send_response(200)
             self.send_header("Content-type","text/html")
