@@ -12,6 +12,6 @@ A ideia foi criar um **servidor simples** que disponibiliza páginas HTML para u
 - **VS Code** como ambiente de desenvolvimento
 
 ---
-### 👩‍💻 Autor
+### 👩‍💻 Heloisa Militão
 
 > Projeto desenvolvido em aula de Back-End / Webserver como exercício prático.
