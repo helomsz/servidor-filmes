@@ -14,9 +14,9 @@
             <p class="subtituloLoginFilmes">Faça login para continuar</p>
         </header>
 
-        <form class="formularioLoginFilmes">
-            <label for="usuario" class="labelLoginFilmes">Usuário</label>
-            <input type="text" id="usuario" name="usuario" class="inputLoginFilmes" required>
+        <form action="/send_login" method="post" class="formularioLoginFilmes">
+            <label for="usuario" class="labelLoginFilmes">E-mail</label>
+            <input type="text" id="email" name="email" class="inputLoginFilmes" required>
 
             <label for="senha" class="labelLoginFilmes">Senha</label>
             <input type="password" id="senha" name="senha" class="inputLoginFilmes" required>
