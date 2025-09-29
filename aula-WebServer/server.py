@@ -18,7 +18,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         except FileNotFoundError:
             pass
         return super().list_directory(path)
-    
+
     def account_user(self, login, senha):
         loga = "heloisamilitaosouza@hotmail.com"
         password = 123456
@@ -27,7 +27,7 @@ class MyHandler(SimpleHTTPRequestHandler):
             return json.dumps({"status": "success", "message": "Usuário Logado"})
         else:
             return json.dumps({"status": "error", "message": "Usuário inexistente!"})
-        
+
     def do_GET(self):
         if self.path == "/loginzin":
             try:
@@ -62,9 +62,9 @@ class MyHandler(SimpleHTTPRequestHandler):
             except FileNotFoundError:
                 self.send_error(404, "File Not Found")
                 pass
-        
+
         elif (self.path == "/get_lista"):
-            
+
             arquivo = "data.json"
 
             if os.path.exists(arquivo):
@@ -83,7 +83,7 @@ class MyHandler(SimpleHTTPRequestHandler):
 
         else:
             super().do_GET()
-        
+
 
     def do_POST(self):
         if self.path == '/send_login':
@@ -95,7 +95,7 @@ class MyHandler(SimpleHTTPRequestHandler):
             password = int(form_data.get('senha', [""])[0])
             logou = self.account_user(login, password)
 
-     
+
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
@@ -134,9 +134,66 @@ class MyHandler(SimpleHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
             self.wfile.write(str(jsum).encode('utf-8'))
+        elif self.path == '/edit_filme':
+            content_length = int(self.headers['Content-length'])
+            body = self.rfile.read(content_length).decode('utf-8')
+            form_data = parse_qs(body)
+
+            filme_id = form_data.get("id", [""])[0]
+            if not filme_id:
+                self.send_response(400)
+                self.end_headers()
+                return
+
+            arquivo = "data.json"
+            with open(arquivo, "r", encoding="utf-8") as file:
+                filmes = json.load(file)
+
+            for filme in filmes:
+                if filme["id"] == filme_id:
+                    for key in ['nome', 'atores', 'diretor', 'ano', 'generos', 'sinopse', 'produtora']:
+                        if key in form_data:
+                            filme[key] = form_data[key][0]
+                    break
+            else:
+                self.send_response(404)
+                self.end_headers()
+                return
+
+            with open(arquivo, "w", encoding="utf-8") as file:
+                json.dump(filmes, file, indent=4, ensure_ascii=False)
+
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(json.dumps({"status": "success", "message": "Filme atualizado"}).encode('utf-8'))
+
+        elif self.path == '/delete_filme':
+            content_length = int(self.headers['Content-length'])
+            body = self.rfile.read(content_length).decode('utf-8')
+            form_data = parse_qs(body)
+
+            filme_id = form_data.get("id", [""])[0]
+            if not filme_id:
+                self.send_response(400)
+                self.end_headers()
+                return
+
+            arquivo = "data.json"
+            with open(arquivo, "r", encoding="utf-8") as file:
+                filmes = json.load(file)
+
+            filmes = [f for f in filmes if f["id"] != filme_id]
+
+            with open(arquivo, "w", encoding="utf-8") as file:
+                json.dump(filmes, file, indent=4, ensure_ascii=False)
+
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(json.dumps({"status": "success", "message": "Filme deletado"}).encode('utf-8'))
 
         else:
             super(MyHandler, self).do_POST()
+
 
 def main():
     server_address = ('', 8000)
