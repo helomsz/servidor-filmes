@@ -3,6 +3,22 @@ import json
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs
 
+filmes_cadastrados = []
+
+def load_filmes():
+    global filmes_cadastrados
+    if os.path.exists('data.json'):
+        with open('data.json', 'r', encoding='utf-8') as f:
+            try:
+                filmes_cadastrados = json.load(f)
+            except json.JSONDecodeError:
+                filmes_cadastrados = []
+                
+def save_filmes():
+    with open('data.json', 'w', encoding='utf-8') as f:
+        json.dump(filmes_cadastrados, f, ensure_ascii=False, indent=4)
+
+load_filmes()
 
 class MyHandler(SimpleHTTPRequestHandler):
     def list_directory(self, path):
@@ -63,8 +79,7 @@ class MyHandler(SimpleHTTPRequestHandler):
                 self.send_error(404, "File Not Found")
                 pass
 
-        elif (self.path == "/get_lista"):
-
+        elif (self.path == "/listarfilmes"):
             arquivo = "data.json"
 
             if os.path.exists(arquivo):
@@ -105,91 +120,105 @@ class MyHandler(SimpleHTTPRequestHandler):
             content_length = int(self.headers['Content-length'])
             body = self.rfile.read(content_length).decode('utf-8')
             form_data = parse_qs(body)
+            
+            nome = form_data.get('nome',[""])[0]
+            atores = form_data.get('atores', [""])[0]
+            diretor = form_data.get('diretor', [""])[0]
+            ano = form_data.get('ano', [""])[0]
+            genero = form_data.get('genero', [""])[0]
+            produtora = form_data.get('produtora', [""])[0]
+            sinopse = form_data.get('sinopse', [""])[0]
 
-            jsum = {
-                "nome": form_data.get('nomeFilme', [""])[0],
-                "atores":form_data.get('atores', [""])[0],
-                "diretor": form_data.get('diretor', [""])[0],
-                "ano": str(form_data.get('anoFilme', ["0"])[0]),
-                "generos": form_data.get('genero', [""])[0],
-                "sinopse": form_data.get('sinopse', [""])[0],
-                "produtora": form_data.get('produtora', [""])[0]
+            filme = {
+                "id": len(filmes_cadastrados),
+                "nome": nome,
+                "atores": atores,
+                "diretor": diretor,
+                "ano": ano,
+                "genero": genero,
+                "produtora": produtora,
+                "sinopse": sinopse
             }
+            
+            filmes_cadastrados.append(filme)
+            
+            save_filmes()
 
-            arquivo = "data.json"
-            if os.path.exists(arquivo):
-                with open(arquivo,  "r", encoding="utf-8") as lista:
-                    try:
-                        filmes = json.load(lista)
-                    except json.JSONDecodeError:
-                        filmes = []
-                filmes.append(jsum)
-            else:
-                filmes = [jsum]
+            print("Data Form: ")
+            print("Nome do Filme: ", form_data.get('nome', [''])[0])
+            print("Atores: ", form_data.get('atores', [''])[0])
+            print("Diretor: ", form_data.get('diretor', [''])[0])
+            print("Ano: ", form_data.get('ano', [''])[0])
+            print("Genero: ", form_data.get('genero', [''])[0])
+            print("Produtora: ", form_data.get('produtora', [''])[0])
+            print("Sinopse: ", form_data.get('sinopse', [''])[0])
 
-            with open(arquivo, "w", encoding="utf-8") as lista:
-                json.dump(filmes, lista, indent=4, ensure_ascii=False)
+            self.send_response(200)
+            self.send_header("Content-type", 'text/html')
+            self.end_headers()
+            self.wfile.write("Filme cadastrado com sucess !".encode('utf-8'))
+            
+        elif self.path == '/editarfilme':
+           
+            content_length = int(self.headers['Content-Length'])
+            body = self.rfile.read(content_length).decode('utf-8')
+            form_data = parse_qs(body)
+
+            filme_id = int(form_data.get('id', [None])[0])
+            
+    
+            if filme_id is None or filme_id >= len(filmes_cadastrados):
+                self.send_response(404)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({'error': 'Filme não encontrado'}).encode('utf-8'))
+                return
+
+            filme = filmes_cadastrados[filme_id]
+
+            for campo in ['nome', 'atores', 'diretor', 'ano', 'genero', 'produtora', 'sinopse']:
+                valor = form_data.get(campo, [None])[0]
+                if valor:
+                    filme[campo] = valor
+
+            save_filmes()
 
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
-            self.wfile.write(str(jsum).encode('utf-8'))
-        elif self.path == '/edit_filme':
-            content_length = int(self.headers['Content-length'])
+            self.wfile.write(json.dumps({'message': 'Filme editado com sucesso'}).encode('utf-8'))
+
+
+        elif self.path == '/deletarfilme':
+            content_length = int(self.headers['Content-Length'])
             body = self.rfile.read(content_length).decode('utf-8')
             form_data = parse_qs(body)
 
-            filme_id = form_data.get("id", [""])[0]
-            if not filme_id:
-                self.send_response(400)
-                self.end_headers()
-                return
+            try:
+                filme_id = int(form_data.get('id', [None])[0])
+            except (ValueError, TypeError):
+                filme_id = None
 
-            arquivo = "data.json"
-            with open(arquivo, "r", encoding="utf-8") as file:
-                filmes = json.load(file)
-
-            for filme in filmes:
-                if filme["id"] == filme_id:
-                    for key in ['nome', 'atores', 'diretor', 'ano', 'generos', 'sinopse', 'produtora']:
-                        if key in form_data:
-                            filme[key] = form_data[key][0]
-                    break
-            else:
+            if filme_id is None or filme_id >= len(filmes_cadastrados):
                 self.send_response(404)
+                self.send_header("Content-type", "application/json")
                 self.end_headers()
+                self.wfile.write(json.dumps({'error': 'Filme não encontrado'}).encode('utf-8'))
                 return
 
-            with open(arquivo, "w", encoding="utf-8") as file:
-                json.dump(filmes, file, indent=4, ensure_ascii=False)
+            filmes_cadastrados.pop(filme_id)
+
+            # Reatribui os IDs
+            for i, filme in enumerate(filmes_cadastrados):
+                filme["id"] = i
+
+            save_filmes()
 
             self.send_response(200)
+            self.send_header("Content-type", "application/json")
             self.end_headers()
-            self.wfile.write(json.dumps({"status": "success", "message": "Filme atualizado"}).encode('utf-8'))
+            self.wfile.write(json.dumps({'message': 'Filme deletado com sucesso'}).encode('utf-8'))
 
-        elif self.path == '/delete_filme':
-            content_length = int(self.headers['Content-length'])
-            body = self.rfile.read(content_length).decode('utf-8')
-            form_data = parse_qs(body)
-
-            filme_id = form_data.get("id", [""])[0]
-            if not filme_id:
-                self.send_response(400)
-                self.end_headers()
-                return
-
-            arquivo = "data.json"
-            with open(arquivo, "r", encoding="utf-8") as file:
-                filmes = json.load(file)
-
-            filmes = [f for f in filmes if f["id"] != filme_id]
-
-            with open(arquivo, "w", encoding="utf-8") as file:
-                json.dump(filmes, file, indent=4, ensure_ascii=False)
-
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(json.dumps({"status": "success", "message": "Filme deletado"}).encode('utf-8'))
 
         else:
             super(MyHandler, self).do_POST()

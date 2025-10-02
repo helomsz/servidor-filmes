@@ -6,7 +6,8 @@
         "ano": "0",
         "generos": "Romance",
         "sinopse": "O primeiro beijo de Elle vira um romance proibido com o garoto mais bonito do colégio, mas acaba colocando em risco a sua relação com seu melhor amigo.",
-        "produtora": "Kommix"
+        "produtora": "Kommix",
+        "id": 0
     },
     {
         "nome": "",
@@ -15,24 +16,27 @@
         "ano": "0",
         "generos": "Romance",
         "sinopse": "blablabla",
-        "produtora": "Kommix"
+        "produtora": "Kommix",
+        "id": 1
     },
     {
-        "nome": "",
-        "atores": "Joe King, Jacob Elordi",
-        "diretor": "Vince Marcello",
-        "ano": "0",
-        "generos": "Romance",
-        "sinopse": "O primeiro beijo de Elle vira um romance proibido com o garoto mais bonito do colégio, mas acaba colocando em risco a sua relação com seu melhor amigo.",
-        "produtora": "Kommix"
+        "id": 2,
+        "nome": "Rua do Medo: 1994",
+        "atores": "Kiana Madeira,Sadie Sink",
+        "diretor": "Leigh Janiak",
+        "ano": "2021",
+        "genero": "Terror",
+        "produtora": "Netflix",
+        "sinopse": "Após uma série de assassinatos brutais, um grupo de adolescentes enfrenta uma força maligna que aterroriza uma cidade há séculos."
     },
     {
-        "nome": "",
-        "atores": "Pessoas",
-        "diretor": "Pessoa",
-        "ano": "0",
-        "generos": "Fantasia",
-        "sinopse": "Alice",
-        "produtora": "Militão"
+        "id": 3,
+        "nome": "Pânico 6",
+        "atores": "Jenna Ortega",
+        "diretor": "Tyler Gillett",
+        "ano": "2023",
+        "genero": "Terror",
+        "produtora": "Paramount",
+        "sinopse": "Sam, Tara, Chad e Mindy, os quatro sobreviventes do massacre realizado pelo Ghostface, decidem deixar Woodsboro para trás em busca de um novo começo em Nova York. Mas não demora muito para eles se tornarem alvo de um novo serial killer."
     }
 ]
