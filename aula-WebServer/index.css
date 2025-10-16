@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 /* Fonte global */
 body.paginaLoginFilmes {
     margin: 0;
@@ -189,4 +190,68 @@ select.inputCadastroFilmes:focus {
 
 .botaoCadastrarFilmes:hover {
     background: #e6c200;
+}
+
+/* Página de Lista de Filmes */
+body.paginaListaFilmes {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(to right, #141e30, #243b55);
+    color: #fff;
+    padding: 2rem;
+}
+
+/* Título principal */
+.tituloListaFilmes {
+    text-align: center;
+    font-size: 2rem;
+    color: #FFD700;
+    margin-bottom: 2rem;
+}
+
+/* Container de todos os filmes */
+#filmesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+/* Card individual do filme */
+.filme {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid #444;
+    border-radius: 0.8rem;
+    padding: 1.5rem;
+    width: 300px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.filme:hover {
+    transform: translateY(-5px);
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Título do filme */
+.filme h2 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    color: #FFD700;
+}
+
+/* Informações do filme */
+.filme p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #ddd;
+}
+
+/* Imagem do filme */
+.filme img {
+    width: 100%;
+    height: auto;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #666;
 }

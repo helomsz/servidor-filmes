@@ -5,9 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="data:,">
     <title>Lista de Filmes | CineWorld</title>
+    <link rel="stylesheet" href="index.css">
     <script src="script.js" defer></script>
 </head>
-<body>
-    <ul id="filmes" ></ul>
+<body class="paginaListaFilmes">
+    <h1 class="tituloListaFilmes">Filmes Cadastrados</h1>
+    <div id="filmesContainer">
+        <p>Carregando filmes...</p>
+    </div>
+    <script>
+        fetch('/listarfilmes')
+            .then(response => response.json())
+            .then(filmes => {
+                const container = document.getElementById('filmesContainer');
+                container.innerHTML = ''; // limpa o "Carregando..."
+
+                if (filmes.length === 0) {
+                    container.innerHTML = '<p>Nenhum filme encontrado.</p>';
+                    return;
+                }
+
+                filmes.forEach(filme => {
+                    const div = document.createElement('div');
+                    div.classList.add('filme');
+                    div.innerHTML = `
+                        <h2>${filme.titulo} (${filme.ano})</h2>
+                        <p><strong>Duração:</strong> ${filme.tempo_duracao} min</p>
+                        <p><strong>Diretor(es):</strong> ${filme.diretores || 'Não informado'}</p>
+                        <p><strong>Gêneros:</strong> ${filme.generos || 'Não informado'}</p>
+                        <p><strong>Produtora(s):</strong> ${filme.produtoras || 'Não informado'}</p>
+                        ${filme.poster ? `<img src="${filme.poster}" alt="Poster de ${filme.titulo}">` : ''}
+                    `;
+                    container.appendChild(div);
+                });
+            })
+            .catch(error => {
+                document.getElementById('filmes-container').innerHTML = '<p>Erro ao carregar os filmes.</p>';
+                console.error('Erro:', error);
+            });
+    </script>
 </body>
 </html>

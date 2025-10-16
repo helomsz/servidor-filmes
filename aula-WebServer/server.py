@@ -2,9 +2,21 @@ import os
 import json
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs
+# biblioteca para conectar ao banco mysql (tem que instalar com pip install mysql-connector-python)
+import mysql.connector
 
+# conecta no banco de dados, usando usuário root e senha senai
+mydb = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="senai",
+    database="SERVIDORFILMES"  
+)
+
+# essa lista é usada para armazenar os filmes quando não estamos usando o banco
 filmes_cadastrados = []
 
+# função que carrega os filmes do arquivo data.json (caso o banco não esteja sendo usado)
 def load_filmes():
     global filmes_cadastrados
     if os.path.exists('data.json'):
@@ -20,6 +32,8 @@ def save_filmes():
 
 load_filmes()
 
+
+# classe que trata as requisições do servidor http
 class MyHandler(SimpleHTTPRequestHandler):
     def list_directory(self, path):
         try:
@@ -43,6 +57,8 @@ class MyHandler(SimpleHTTPRequestHandler):
             return json.dumps({"status": "success", "message": "Usuário Logado"})
         else:
             return json.dumps({"status": "error", "message": "Usuário inexistente!"})
+        
+    
 
     def do_GET(self):
         if self.path == "/loginzin":
@@ -79,22 +95,42 @@ class MyHandler(SimpleHTTPRequestHandler):
                 self.send_error(404, "File Not Found")
                 pass
 
-        elif (self.path == "/listarfilmes"):
-            arquivo = "data.json"
+        elif self.path == "/listarfilmes":
+            try:
+                cursor = mydb.cursor(dictionary=True)
+                query = """
+                SELECT 
+                    f.id,
+                    f.titulo,
+                    f.ano,
+                    f.tempo_duracao,
+                    f.poster,
+                    GROUP_CONCAT(DISTINCT g.nome) AS generos,
+                    GROUP_CONCAT(DISTINCT p.nome) AS produtoras,
+                    GROUP_CONCAT(DISTINCT CONCAT(d.nome, ' ', d.sobrenome)) AS diretores
+                FROM filme f
+                LEFT JOIN filme_genero fg ON f.id = fg.filme_id
+                LEFT JOIN genero g ON fg.genero_id = g.id
+                LEFT JOIN filme_produtora fp ON f.id = fp.filme_id
+                LEFT JOIN produtora p ON fp.produtora_id = p.id
+                LEFT JOIN filme_diretor fd ON f.id = fd.filme_id
+                LEFT JOIN diretor d ON fd.filme_diretor = d.id
+                GROUP BY f.id
+                ORDER BY f.ano DESC;
+                """
+                cursor.execute(query)
+                filmes = cursor.fetchall()
 
-            if os.path.exists(arquivo):
-                with open(arquivo, encoding="utf-8") as listagem:
-                    try:
-                        filmes = json.load(listagem)
-                    except json.JSONDecodeError:
-                        filmes = []
-            else:
-                filmes = []
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps(filmes, ensure_ascii=False, indent=4).encode("utf-8"))
 
-            self.send_response(200)
-            self.send_header("Content-type", "application/json")
-            self.end_headers()
-            self.wfile.write(json.dumps(filmes).encode("utf-8"))
+            except mysql.connector.Error as err:
+                self.send_response(500)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"erro": str(err)}).encode("utf-8"))
 
         else:
             super().do_GET()

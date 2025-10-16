@@ -38,5 +38,15 @@
         "genero": "Terror",
         "produtora": "Paramount",
         "sinopse": "Sam, Tara, Chad e Mindy, os quatro sobreviventes do massacre realizado pelo Ghostface, decidem deixar Woodsboro para trás em busca de um novo começo em Nova York. Mas não demora muito para eles se tornarem alvo de um novo serial killer."
+    },
+    {
+        "id": 4,
+        "nome": "Simplesmente Acontece",
+        "atores": "lily collins",
+        "diretor": " Christian Ditter",
+        "ano": "2014",
+        "genero": "Romance",
+        "produtora": "Constantin Film, Starz Entertainment",
+        "sinopse": "Alex e Rosie são amigos inseparáveis que cresceram juntos em Londres, compartilhando entre si suas melhores experiências. Tudo muda quando Alex ganha uma bolsa de estudos e passa a morar nos EUA. Separados, seus caminhos agora são outros. Mas nos tempos de hoje é impossível não se conectar. E, em se tratando de amor, o difícil é fazer as escolhas certas."
     }
 ]
