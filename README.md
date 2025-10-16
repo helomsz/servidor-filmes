@@ -10,6 +10,7 @@ A ideia foi criar um **servidor simples** que disponibiliza páginas HTML para u
 - **http.server** (biblioteca padrão do Python)
 - **HTML5 & CSS3**
 - **VS Code** como ambiente de desenvolvimento
+- **MySQL**
 
 ---
 ### 👩‍💻 Heloisa Militão
