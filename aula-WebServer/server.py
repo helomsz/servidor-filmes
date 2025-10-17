@@ -58,6 +58,18 @@ class MyHandler(SimpleHTTPRequestHandler):
         else:
             return json.dumps({"status": "error", "message": "Usuário inexistente!"})
         
+        
+    def insertFilme(self, nome, produtora, orcamento, duracao, ano, poster):
+        cursor = mydb.cursor()
+        cursor.execute("INSERT INTO SERVIDORFILMES.filme (titulo, id_produtora, orcamento, duracao, ano, poster) VALUES (%s, %s, %s, %s, %s, %s)",(nome, produtora, duracao, ano, poster)) 
+        cursor.execute("SELECT id_filme FROM SERVIDORFILMES.filme WHERE titulo = %s",(nome,))    
+        resultado = cursor.fetchall()
+        cursor.execute("SELECT * FROM SERVIDORFILMES.filme WHERE id_filme = %s, {resultado[0][0]},")   
+        resultado = cursor.fetchall()
+        print(resultado)
+        cursor.close()
+        return resultado
+        
     
 
     def do_GET(self):
@@ -156,38 +168,48 @@ class MyHandler(SimpleHTTPRequestHandler):
             content_length = int(self.headers['Content-length'])
             body = self.rfile.read(content_length).decode('utf-8')
             form_data = parse_qs(body)
-            
+
             nome = form_data.get('nome',[""])[0]
-            atores = form_data.get('atores', [""])[0]
-            diretor = form_data.get('diretor', [""])[0]
-            ano = form_data.get('ano', [""])[0]
-            genero = form_data.get('genero', [""])[0]
-            produtora = form_data.get('produtora', [""])[0]
-            sinopse = form_data.get('sinopse', [""])[0]
+            produtora = form_data.get('produtora',[""])[0]
+            orcamento = int(form_data.get('orcamento',[""])[0])
+            duracao = form_data.get('duracao',[""])[0]
+            ano = form_data.get('ano',[""])[0]
+            poster = form_data.get('capa',[""])[0]
 
-            filme = {
-                "id": len(filmes_cadastrados),
-                "nome": nome,
-                "atores": atores,
-                "diretor": diretor,
-                "ano": ano,
-                "genero": genero,
-                "produtora": produtora,
-                "sinopse": sinopse
-            }
-            
-            filmes_cadastrados.append(filme)
-            
-            save_filmes()
+            resp = self.insertFilme(nome, produtora, orcamento, duracao, ano, poster)
 
-            print("Data Form: ")
-            print("Nome do Filme: ", form_data.get('nome', [''])[0])
-            print("Atores: ", form_data.get('atores', [''])[0])
-            print("Diretor: ", form_data.get('diretor', [''])[0])
-            print("Ano: ", form_data.get('ano', [''])[0])
-            print("Genero: ", form_data.get('genero', [''])[0])
-            print("Produtora: ", form_data.get('produtora', [''])[0])
-            print("Sinopse: ", form_data.get('sinopse', [''])[0])
+            
+            # nome = form_data.get('nome',[""])[0]
+            # atores = form_data.get('atores', [""])[0]
+            # diretor = form_data.get('diretor', [""])[0]
+            # ano = form_data.get('ano', [""])[0]
+            # genero = form_data.get('genero', [""])[0]
+            # produtora = form_data.get('produtora', [""])[0]
+            # sinopse = form_data.get('sinopse', [""])[0]
+
+            # filme = {
+            #     "id": len(filmes_cadastrados),
+            #     "nome": nome,
+            #     "atores": atores,
+            #     "diretor": diretor,
+            #     "ano": ano,
+            #     "genero": genero,
+            #     "produtora": produtora,
+            #     "sinopse": sinopse
+            # }
+            
+            # filmes_cadastrados.append(filme)
+            
+            # save_filmes()
+
+            # print("Data Form: ")
+            # print("Nome do Filme: ", form_data.get('nome', [''])[0])
+            # print("Atores: ", form_data.get('atores', [''])[0])
+            # print("Diretor: ", form_data.get('diretor', [''])[0])
+            # print("Ano: ", form_data.get('ano', [''])[0])
+            # print("Genero: ", form_data.get('genero', [''])[0])
+            # print("Produtora: ", form_data.get('produtora', [''])[0])
+            # print("Sinopse: ", form_data.get('sinopse', [''])[0])
 
             self.send_response(200)
             self.send_header("Content-type", 'text/html')
